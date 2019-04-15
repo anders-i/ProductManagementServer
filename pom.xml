@@ -163,6 +163,11 @@
       <version>2.1.1</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>jdbc</artifactId>
+      <version>9.3.jdbc4-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>

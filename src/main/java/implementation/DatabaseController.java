@@ -39,7 +39,7 @@ public class DatabaseController {
     }
 
     public void createProduct(Product product, Connection con) throws SQLException {
-        String query = "INSERT INTO product (name, category, maincolor, location, id, amount, restocked) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO products (name, category, maincolor, location, id, amount, restocked) VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, product.getName());
         statement.setString(2, product.getCategory());

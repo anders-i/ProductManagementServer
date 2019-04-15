@@ -34,7 +34,7 @@ public class ProductsApiServiceImpl extends ProductsApiService {
         try(Connection con = DataSource.getInstance().getConnection()) {
             new DatabaseController().createProduct(body, con);
               return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
-        } catch (Exception e) {  
+        } catch (Exception e) {
               return Response.status(400).entity(e.toString()).build();
         }
       
