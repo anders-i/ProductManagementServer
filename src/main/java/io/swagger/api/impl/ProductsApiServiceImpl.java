@@ -1,5 +1,7 @@
 package io.swagger.api.impl;
 
+import implementation.DataSource;
+import implementation.DatabaseController;
 import io.swagger.api.*;
 import io.swagger.model.*;
 
@@ -13,6 +15,7 @@ import java.util.List;
 import io.swagger.api.NotFoundException;
 
 import java.io.InputStream;
+import java.sql.Connection;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
@@ -28,8 +31,13 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     }
     @Override
     public Response addProduct(Product body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try(Connection con = DataSource.getInstance().getConnection()) {
+            new DatabaseController().createProduct(body, con);
+              return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        } catch (Exception e) {  
+              return Response.status(400).entity(e.toString()).build();
+        }
+      
     }
     @Override
     public Response deleteProduct(Barcode body, SecurityContext securityContext) throws NotFoundException {
