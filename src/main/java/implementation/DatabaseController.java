@@ -8,6 +8,7 @@ package implementation;
 
 import io.swagger.model.AllCategoriesRequest;
 import io.swagger.model.AllLocationsRequest;
+import io.swagger.model.Barcode;
 import io.swagger.model.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,7 +44,10 @@ public class DatabaseController {
     }
 
     public void createProduct(Product product, Connection con) throws SQLException {
-        String query = "INSERT INTO products (name, category, maincolor, location, id, amount, restocked) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        // todo update query when database and swagger is updated
+        // String query = "INSERT INTO products (name, category, maincolor, location, id or barcode remeber to set barcode/id to bigint, amount, canBeRestocked, mustBeRestocked, minAmount) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        // also update statements
+        String query = "INSERT INTO products (name, category, maincolor, location, barcode, amount, restocked) VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, product.getName());
         statement.setString(2, product.getCategory());
@@ -92,5 +96,17 @@ public class DatabaseController {
         statement.close();
         return response;
     }
-       
+
+    public Barcode generateBarcodeProduct(Connection con) throws SQLException {
+        Barcode response = new Barcode();
+        String query = "SELECT MAX(barcode) FROM products;";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        if(rs.next()){
+            response.barcodeID((rs.getLong(1)) + 1L);
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }
 }

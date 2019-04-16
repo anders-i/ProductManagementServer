@@ -1,5 +1,7 @@
 package io.swagger.api.impl;
 
+import implementation.DataSource;
+import implementation.DatabaseController;
 import io.swagger.api.*;
 import io.swagger.model.*;
 
@@ -9,6 +11,8 @@ import java.util.List;
 import io.swagger.api.NotFoundException;
 
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
@@ -24,7 +28,11 @@ public class BarcodeApiServiceImpl extends BarcodeApiService {
     }
     @Override
     public Response generateBarcodeProduct(Barcode body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            Barcode response = new DatabaseController().generateBarcodeProduct(con);
+            return Response.ok().entity(response).build();
+        } catch (SQLException ex) {
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+        }
     }
 }
