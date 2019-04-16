@@ -6,10 +6,14 @@
 package implementation;
 
 
+import io.swagger.model.AllCategoriesRequest;
+import io.swagger.model.AllLocationsRequest;
 import io.swagger.model.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +56,41 @@ public class DatabaseController {
         statement.close();
     }
 
+    public void addNewCategory(String newCategory, Connection con) throws SQLException{
+        newCategory = newCategory.replace("\"", "");
+        String query = "INSERT INTO category (category) VALUES (?);";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, newCategory);
+        statement.executeUpdate();
+        statement.close();
+    }
     
+    public AllCategoriesRequest getAllCategories(Connection con) throws SQLException{
+        AllCategoriesRequest response = new AllCategoriesRequest();
+        String query = "SELECT * FROM category";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        
+        while(rs.next()){
+            response.add(rs.getString("category"));
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }
+
+    public AllLocationsRequest getAllLocations(Connection con) throws SQLException {
+        AllLocationsRequest response = new AllLocationsRequest();
+        String query = "SELECT * FROM location";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        
+        while(rs.next()){
+            response.add(rs.getString("location"));
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }
        
 }

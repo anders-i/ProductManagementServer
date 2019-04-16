@@ -16,49 +16,68 @@ import io.swagger.api.NotFoundException;
 
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-09T12:43:58.390Z")
 public class ProductsApiServiceImpl extends ProductsApiService {
+
     @Override
     public Response addCategory(String body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            new DatabaseController().addNewCategory(body, con);
+            return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(e.toString()).build();
+        }
     }
+
     @Override
     public Response addProduct(Product body, SecurityContext securityContext) throws NotFoundException {
-        try(Connection con = DataSource.getInstance().getConnection()) {
+        try (Connection con = DataSource.getInstance().getConnection()) {
             new DatabaseController().createProduct(body, con);
-              return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+            return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
-              return Response.status(400).entity(e.toString()).build();
+            return Response.status(400).entity(e.toString()).build();
         }
-      
+
     }
+
     @Override
     public Response deleteProduct(Barcode body, SecurityContext securityContext) throws NotFoundException {
         // do some magic!
         return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
+
     @Override
     public Response editProduct(Product body, SecurityContext securityContext) throws NotFoundException {
         // do some magic!
         return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
+
     @Override
     public Response getAllCategories(SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            AllCategoriesRequest response = new DatabaseController().getAllCategories(con);
+            return Response.ok().entity(response).build();
+        } catch (SQLException ex) {
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+        }
     }
+
     @Override
     public Response getProduct(Barcode body, SecurityContext securityContext) throws NotFoundException {
         // do some magic!
         return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
+
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         // do some magic!

@@ -1,5 +1,7 @@
 package io.swagger.api.impl;
 
+import implementation.DataSource;
+import implementation.DatabaseController;
 import io.swagger.api.*;
 import io.swagger.model.*;
 
@@ -11,6 +13,8 @@ import java.util.List;
 import io.swagger.api.NotFoundException;
 
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
@@ -31,8 +35,12 @@ public class LocationApiServiceImpl extends LocationApiService {
     }
     @Override
     public Response getAllLocations(SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            AllLocationsRequest response = new DatabaseController().getAllLocations(con);
+            return Response.ok().entity(response).build();
+        } catch (SQLException ex) {
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+        }
     }
     @Override
     public Response searchLocation(Barcode body, SecurityContext securityContext) throws NotFoundException {
