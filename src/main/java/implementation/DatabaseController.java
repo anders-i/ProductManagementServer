@@ -5,7 +5,6 @@
  */
 package implementation;
 
-
 import io.swagger.model.AllCategoriesRequest;
 import io.swagger.model.AllLocationsRequest;
 import io.swagger.model.Barcode;
@@ -20,23 +19,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  *
  * @author Anders
  */
 public class DatabaseController {
-    
+
     // Map used to sync with object if same username is being requested access on.
     // Using Collections.synchronizedMap to ensure each thread have an up to date view on the map.
     private final Map<String, Object> objectLock = Collections.synchronizedMap(new HashMap());
     private static DatabaseController instance;
     private static final Object threadLock = new Object();
-    
+
     public static DatabaseController getInstance() throws SQLException {
         if (instance == null) {
-            synchronized(threadLock){
-                if(instance == null){
+            synchronized (threadLock) {
+                if (instance == null) {
                     instance = new DatabaseController();
                 }
             }
@@ -61,7 +59,7 @@ public class DatabaseController {
         statement.close();
     }
 
-    public void addNewCategory(String newCategory, Connection con) throws SQLException{
+    public void addNewCategory(String newCategory, Connection con) throws SQLException {
         newCategory = newCategory.replace("\"", "");
         String query = "INSERT INTO category (category) VALUES (?);";
         PreparedStatement statement = con.prepareStatement(query);
@@ -69,14 +67,14 @@ public class DatabaseController {
         statement.executeUpdate();
         statement.close();
     }
-    
-    public AllCategoriesRequest getAllCategories(Connection con) throws SQLException{
+
+    public AllCategoriesRequest getAllCategories(Connection con) throws SQLException {
         AllCategoriesRequest response = new AllCategoriesRequest();
         String query = "SELECT * FROM category";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             response.add(rs.getString("category"));
         }
         rs.close();
@@ -89,8 +87,8 @@ public class DatabaseController {
         String query = "SELECT * FROM location";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             response.add(rs.getString("location"));
         }
         rs.close();
@@ -99,12 +97,16 @@ public class DatabaseController {
     }
 
     public Barcode generateBarcodeProduct(Connection con) throws SQLException {
+        RandomNumber randomNumber = new RandomNumber();
         Barcode response = new Barcode();
-        String query = "SELECT MAX(barcode) FROM products;";
+        response.setBarcodeID(randomNumber.randomBarcode().getBarcodeID());
+        String query = "SELECT * FROM products WHERE barcode ='" + response.getBarcodeID() + "';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        if(rs.next()){
-            response.barcodeID((rs.getLong(1)) + 1L);
+        if (!rs.next()) {
+            generateBarcodeProduct(con);
+        } else {
+            return response;
         }
         rs.close();
         statement.close();
@@ -116,7 +118,7 @@ public class DatabaseController {
         String query = "SELECT * FROM products";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        while(rs.next()){
+        while (rs.next()) {
             Product product = new Product();
             product.setName(rs.getString("name"));
             product.setCategory(rs.getString("category"));
