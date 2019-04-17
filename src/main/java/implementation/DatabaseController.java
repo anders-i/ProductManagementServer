@@ -10,6 +10,7 @@ import io.swagger.model.AllCategoriesRequest;
 import io.swagger.model.AllLocationsRequest;
 import io.swagger.model.Barcode;
 import io.swagger.model.Product;
+import io.swagger.model.ProductArray;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -104,6 +105,27 @@ public class DatabaseController {
         ResultSet rs = statement.executeQuery(query);
         if(rs.next()){
             response.barcodeID((rs.getLong(1)) + 1L);
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }
+
+    public ProductArray getAllProducts(Connection con) throws SQLException {
+        ProductArray response = new ProductArray();
+        String query = "SELECT * FROM products";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        while(rs.next()){
+            Product product = new Product();
+            product.setName(rs.getString("name"));
+            product.setCategory(rs.getString("category"));
+            product.setColor(rs.getString("maincolor"));
+            product.setLocation(rs.getString("location"));
+            product.setBarcode(rs.getLong("barcode"));
+            product.setAmount(rs.getInt("amount"));
+            product.setRestock(rs.getBoolean("restocked"));
+            response.add(product);
         }
         rs.close();
         statement.close();

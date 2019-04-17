@@ -80,7 +80,12 @@ public class ProductsApiServiceImpl extends ProductsApiService {
 
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        // this is implementation for getAllProducts
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            ProductArray response = new DatabaseController().getAllProducts(con);
+            return Response.ok().entity(response).build();
+        } catch (SQLException ex) {
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+        }
     }
 }
