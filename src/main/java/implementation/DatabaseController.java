@@ -103,9 +103,11 @@ public class DatabaseController {
         String query = "SELECT * FROM products WHERE barcode ='" + response.getBarcodeID() + "';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        if (!rs.next()) {
-            generateBarcodeProduct(con);
+        if (rs.next()) {
+            response.setBarcodeID(generateBarcodeProduct(con).getBarcodeID());
         } else {
+            rs.close();
+            statement.close();
             return response;
         }
         rs.close();
