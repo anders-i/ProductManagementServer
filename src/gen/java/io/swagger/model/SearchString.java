@@ -21,30 +21,30 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * Barcode
+ * SearchString
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
-public class Barcode   {
-  @JsonProperty("barcodeID")
-  private Long barcodeID = null;
+public class SearchString   {
+  @JsonProperty("keyword")
+  private String keyword = null;
 
-  public Barcode barcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  public SearchString keyword(String keyword) {
+    this.keyword = keyword;
     return this;
   }
 
   /**
-   * The barecode
-   * @return barcodeID
+   * The keyword for searching after products
+   * @return keyword
    **/
-  @JsonProperty("barcodeID")
-  @ApiModelProperty(value = "The barecode")
-  public Long getBarcodeID() {
-    return barcodeID;
+  @JsonProperty("keyword")
+  @ApiModelProperty(value = "The keyword for searching after products")
+  public String getKeyword() {
+    return keyword;
   }
 
-  public void setBarcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
   }
 
 
@@ -56,22 +56,22 @@ public class Barcode   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Barcode barcode = (Barcode) o;
-    return Objects.equals(this.barcodeID, barcode.barcodeID);
+    SearchString searchString = (SearchString) o;
+    return Objects.equals(this.keyword, searchString.keyword);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(barcodeID);
+    return Objects.hash(keyword);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Barcode {\n");
+    sb.append("class SearchString {\n");
     
-    sb.append("    barcodeID: ").append(toIndentedString(barcodeID)).append("\n");
+    sb.append("    keyword: ").append(toIndentedString(keyword)).append("\n");
     sb.append("}");
     return sb.toString();
   }

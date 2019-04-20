@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.jaxrs.*;
 
 import io.swagger.model.Barcode;
+import io.swagger.model.Token;
 
 import java.util.Map;
 import java.util.List;
@@ -29,7 +30,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the barcode API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-09T12:43:58.390Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
 public class BarcodeApi  {
    private final BarcodeApiService delegate;
 
@@ -65,13 +66,13 @@ public class BarcodeApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response generateBarcodeLocation(@ApiParam(value = "Request and Generate a new barcode for a location" ,required=true) Barcode body
+    public Response generateBarcodeLocation(@ApiParam(value = "Request and Generate a new barcode for a location" ,required=true) Token body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.generateBarcodeLocation(body,securityContext);
     }
     @POST
-    @Path("/generateBarcodeProduct")
+    @Path("/")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @io.swagger.annotations.ApiOperation(value = "", notes = "When you want create a new barcode for a product. ", response = Barcode.class, tags={ "barcode", })
@@ -81,7 +82,7 @@ public class BarcodeApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response generateBarcodeProduct(@ApiParam(value = "Request and Generate a new barcode for a product" ,required=true) Barcode body
+    public Response generateBarcodeProduct(@ApiParam(value = "Request and Generate a new barcode for a product" ,required=true) Token body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.generateBarcodeProduct(body,securityContext);

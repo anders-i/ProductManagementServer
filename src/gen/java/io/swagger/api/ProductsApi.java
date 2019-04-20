@@ -7,11 +7,13 @@ import io.swagger.api.factories.ProductsApiServiceFactory;
 import io.swagger.annotations.ApiParam;
 import io.swagger.jaxrs.*;
 
-import io.swagger.model.AllCategoriesRequest;
-import io.swagger.model.Barcode;
+import io.swagger.model.AllCategories;
+import io.swagger.model.CategoryRequest;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
+import io.swagger.model.ProductRequest;
 import io.swagger.model.SearchRequest;
+import io.swagger.model.Token;
 
 import java.util.Map;
 import java.util.List;
@@ -33,7 +35,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the products API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-09T12:43:58.390Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
 public class ProductsApi  {
    private final ProductsApiService delegate;
 
@@ -69,7 +71,7 @@ public class ProductsApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response addCategory(@ApiParam(value = "add product category to the system" ,required=true) String body
+    public Response addCategory(@ApiParam(value = "add product category to the system" ,required=true) CategoryRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.addCategory(body,securityContext);
@@ -85,7 +87,7 @@ public class ProductsApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response addProduct(@ApiParam(value = "Add new product to system" ,required=true) Product body
+    public Response addProduct(@ApiParam(value = "Add new product to system" ,required=true) ProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.addProduct(body,securityContext);
@@ -101,7 +103,7 @@ public class ProductsApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response deleteProduct(@ApiParam(value = "delete product from system" ,required=true) Barcode body
+    public Response deleteProduct(@ApiParam(value = "delete product from system" ,required=true) ProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.deleteProduct(body,securityContext);
@@ -117,38 +119,55 @@ public class ProductsApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response editProduct(@ApiParam(value = "edit product from system" ,required=true) Product body
+    public Response editProduct(@ApiParam(value = "edit product from system" ,required=true) ProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.editProduct(body,securityContext);
     }
     @GET
     @Path("/getAllCategories")
-    
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "To get array of all product categories ", response = AllCategoriesRequest.class, tags={ "product", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "To get array of all product categories ", response = AllCategories.class, tags={ "product", })
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = AllCategoriesRequest.class),
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = AllCategories.class),
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response getAllCategories(@Context SecurityContext securityContext)
+    public Response getAllCategories(@ApiParam(value = "add product category to the system" ,required=true) Token body
+,@Context SecurityContext securityContext)
     throws NotFoundException {
-        return delegate.getAllCategories(securityContext);
+        return delegate.getAllCategories(body,securityContext);
+    }
+    @GET
+    @Path("/getAllProducts")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "returns arraylist with all products", notes = "", response = ProductArray.class, tags={ "product", })
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = ProductArray.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
+    public Response getAllProducts(@ApiParam(value = "To get array with all products" ,required=true) Token body
+,@Context SecurityContext securityContext)
+    throws NotFoundException {
+        return delegate.getAllProducts(body,securityContext);
     }
     @GET
     @Path("/getProduct")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "When you want to delete a product. ", response = Product.class, tags={ "product", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "get a single product ", response = Product.class, tags={ "product", })
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = Product.class),
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response getProduct(@ApiParam(value = "get product from system" ,required=true) Barcode body
+    public Response getProduct(@ApiParam(value = "get product from system" ,required=true) ProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.getProduct(body,securityContext);
@@ -157,7 +176,7 @@ public class ProductsApi  {
     @Path("/searchProducts")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "When you want to search after products by a search a search keyword. ", response = ProductArray.class, tags={ "product", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "When you want to search after products by a search keyword. ", response = ProductArray.class, tags={ "product", })
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = ProductArray.class),
         

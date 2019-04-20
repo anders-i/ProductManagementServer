@@ -18,33 +18,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Product;
+import io.swagger.model.Token;
 import javax.validation.constraints.*;
 
 /**
- * Barcode
+ * ProductRequest
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
-public class Barcode   {
-  @JsonProperty("barcodeID")
-  private Long barcodeID = null;
+public class ProductRequest   {
+  @JsonProperty("product")
+  private Product product = null;
 
-  public Barcode barcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  @JsonProperty("token")
+  private Token token = null;
+
+  public ProductRequest product(Product product) {
+    this.product = product;
     return this;
   }
 
   /**
-   * The barecode
-   * @return barcodeID
+   * Get product
+   * @return product
    **/
-  @JsonProperty("barcodeID")
-  @ApiModelProperty(value = "The barecode")
-  public Long getBarcodeID() {
-    return barcodeID;
+  @JsonProperty("product")
+  @ApiModelProperty(value = "")
+  public Product getProduct() {
+    return product;
   }
 
-  public void setBarcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  public ProductRequest token(Token token) {
+    this.token = token;
+    return this;
+  }
+
+  /**
+   * Get token
+   * @return token
+   **/
+  @JsonProperty("token")
+  @ApiModelProperty(value = "")
+  public Token getToken() {
+    return token;
+  }
+
+  public void setToken(Token token) {
+    this.token = token;
   }
 
 
@@ -56,22 +80,24 @@ public class Barcode   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Barcode barcode = (Barcode) o;
-    return Objects.equals(this.barcodeID, barcode.barcodeID);
+    ProductRequest productRequest = (ProductRequest) o;
+    return Objects.equals(this.product, productRequest.product) &&
+        Objects.equals(this.token, productRequest.token);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(barcodeID);
+    return Objects.hash(product, token);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Barcode {\n");
+    sb.append("class ProductRequest {\n");
     
-    sb.append("    barcodeID: ").append(toIndentedString(barcodeID)).append("\n");
+    sb.append("    product: ").append(toIndentedString(product)).append("\n");
+    sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("}");
     return sb.toString();
   }

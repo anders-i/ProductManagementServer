@@ -6,8 +6,8 @@
 package implementation;
 
 
-import io.swagger.model.AllCategoriesRequest;
-import io.swagger.model.AllLocationsRequest;
+import io.swagger.model.AllCategories;
+import io.swagger.model.AllLocations;
 import io.swagger.model.Barcode;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
@@ -45,10 +45,7 @@ public class DatabaseController {
     }
 
     public void createProduct(Product product, Connection con) throws SQLException {
-        // todo update query when database and swagger is updated
-        // String query = "INSERT INTO products (name, category, maincolor, location, id or barcode remeber to set barcode/id to bigint, amount, canBeRestocked, mustBeRestocked, minAmount) VALUES (?, ?, ?, ?, ?, ?, ?);";
-        // also update statements
-        String query = "INSERT INTO products (name, category, maincolor, location, barcode, amount, restocked) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO public.products (name, category, maincolor, location, barcode, amount, canBeRestocked, mustBeRestocked, minAmount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, product.getName());
         statement.setString(2, product.getCategory());
@@ -56,7 +53,9 @@ public class DatabaseController {
         statement.setString(4, product.getLocation());
         statement.setLong(5, product.getBarcode());
         statement.setInt(6, product.getAmount());
-        statement.setBoolean(7, product.isRestock());
+        statement.setBoolean(7, product.isCanBeRestock());
+        statement.setBoolean(8, product.isMustBeRestock());
+        statement.setInt(9, product.getMinAmount());
         statement.executeUpdate();
         statement.close();
     }
@@ -70,8 +69,8 @@ public class DatabaseController {
         statement.close();
     }
     
-    public AllCategoriesRequest getAllCategories(Connection con) throws SQLException{
-        AllCategoriesRequest response = new AllCategoriesRequest();
+    public AllCategories getAllCategories(Connection con) throws SQLException{
+        AllCategories response = new AllCategories();
         String query = "SELECT * FROM category";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
@@ -84,8 +83,8 @@ public class DatabaseController {
         return response;
     }
 
-    public AllLocationsRequest getAllLocations(Connection con) throws SQLException {
-        AllLocationsRequest response = new AllLocationsRequest();
+    public AllLocations getAllLocations(Connection con) throws SQLException {
+        AllLocations response = new AllLocations();
         String query = "SELECT * FROM location";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
@@ -124,7 +123,9 @@ public class DatabaseController {
             product.setLocation(rs.getString("location"));
             product.setBarcode(rs.getLong("barcode"));
             product.setAmount(rs.getInt("amount"));
-            product.setRestock(rs.getBoolean("restocked"));
+            product.setMinAmount(rs.getInt("minAmount"));
+            product.setMustBeRestock(rs.getBoolean("mustBeRestocked"));
+            product.setCanBeRestock(rs.getBoolean("canBeRestocked"));
             response.add(product);
         }
         rs.close();

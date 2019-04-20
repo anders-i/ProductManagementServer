@@ -21,30 +21,52 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * Barcode
+ * Token
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
-public class Barcode   {
-  @JsonProperty("barcodeID")
-  private Long barcodeID = null;
+public class Token   {
+  @JsonProperty("accessToken")
+  private String accessToken = null;
 
-  public Barcode barcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  @JsonProperty("expires")
+  private String expires = null;
+
+  public Token accessToken(String accessToken) {
+    this.accessToken = accessToken;
     return this;
   }
 
   /**
-   * The barecode
-   * @return barcodeID
+   * The access token
+   * @return accessToken
    **/
-  @JsonProperty("barcodeID")
-  @ApiModelProperty(value = "The barecode")
-  public Long getBarcodeID() {
-    return barcodeID;
+  @JsonProperty("accessToken")
+  @ApiModelProperty(value = "The access token")
+  public String getAccessToken() {
+    return accessToken;
   }
 
-  public void setBarcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
+  public Token expires(String expires) {
+    this.expires = expires;
+    return this;
+  }
+
+  /**
+   * Date when it expires
+   * @return expires
+   **/
+  @JsonProperty("expires")
+  @ApiModelProperty(value = "Date when it expires")
+  public String getExpires() {
+    return expires;
+  }
+
+  public void setExpires(String expires) {
+    this.expires = expires;
   }
 
 
@@ -56,22 +78,24 @@ public class Barcode   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Barcode barcode = (Barcode) o;
-    return Objects.equals(this.barcodeID, barcode.barcodeID);
+    Token token = (Token) o;
+    return Objects.equals(this.accessToken, token.accessToken) &&
+        Objects.equals(this.expires, token.expires);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(barcodeID);
+    return Objects.hash(accessToken, expires);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Barcode {\n");
+    sb.append("class Token {\n");
     
-    sb.append("    barcodeID: ").append(toIndentedString(barcodeID)).append("\n");
+    sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
+    sb.append("    expires: ").append(toIndentedString(expires)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -18,33 +18,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Token;
 import javax.validation.constraints.*;
 
 /**
- * Barcode
+ * CategoryRequest
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
-public class Barcode   {
-  @JsonProperty("barcodeID")
-  private Long barcodeID = null;
+public class CategoryRequest   {
+  @JsonProperty("category")
+  private String category = null;
 
-  public Barcode barcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  @JsonProperty("token")
+  private Token token = null;
+
+  public CategoryRequest category(String category) {
+    this.category = category;
     return this;
   }
 
   /**
-   * The barecode
-   * @return barcodeID
+   * Get category
+   * @return category
    **/
-  @JsonProperty("barcodeID")
-  @ApiModelProperty(value = "The barecode")
-  public Long getBarcodeID() {
-    return barcodeID;
+  @JsonProperty("category")
+  @ApiModelProperty(value = "")
+  public String getCategory() {
+    return category;
   }
 
-  public void setBarcodeID(Long barcodeID) {
-    this.barcodeID = barcodeID;
+  public void setCategory(String category) {
+    this.category = category;
+  }
+
+  public CategoryRequest token(Token token) {
+    this.token = token;
+    return this;
+  }
+
+  /**
+   * Get token
+   * @return token
+   **/
+  @JsonProperty("token")
+  @ApiModelProperty(value = "")
+  public Token getToken() {
+    return token;
+  }
+
+  public void setToken(Token token) {
+    this.token = token;
   }
 
 
@@ -56,22 +79,24 @@ public class Barcode   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Barcode barcode = (Barcode) o;
-    return Objects.equals(this.barcodeID, barcode.barcodeID);
+    CategoryRequest categoryRequest = (CategoryRequest) o;
+    return Objects.equals(this.category, categoryRequest.category) &&
+        Objects.equals(this.token, categoryRequest.token);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(barcodeID);
+    return Objects.hash(category, token);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Barcode {\n");
+    sb.append("class CategoryRequest {\n");
     
-    sb.append("    barcodeID: ").append(toIndentedString(barcodeID)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
+    sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -7,9 +7,11 @@ import io.swagger.api.factories.LocationApiServiceFactory;
 import io.swagger.annotations.ApiParam;
 import io.swagger.jaxrs.*;
 
-import io.swagger.model.AllLocationsRequest;
-import io.swagger.model.Barcode;
+import io.swagger.model.AllLocations;
+import io.swagger.model.LocationRequest;
+import io.swagger.model.LocationSearchRequest;
 import io.swagger.model.ProductArray;
+import io.swagger.model.Token;
 
 import java.util.Map;
 import java.util.List;
@@ -31,7 +33,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the location API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-09T12:43:58.390Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
 public class LocationApi  {
    private final LocationApiService delegate;
 
@@ -67,7 +69,7 @@ public class LocationApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response addLocation(@ApiParam(value = "add location to the system" ,required=true) String body
+    public Response addLocation(@ApiParam(value = "add location to the system" ,required=true) LocationRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.addLocation(body,securityContext);
@@ -83,25 +85,26 @@ public class LocationApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response deleteLocation(@ApiParam(value = "delete location in the system" ,required=true) String body
+    public Response deleteLocation(@ApiParam(value = "delete location in the system" ,required=true) LocationRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.deleteLocation(body,securityContext);
     }
     @GET
     @Path("/getAllLocations")
-    
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "To get array of all locations ", response = AllLocationsRequest.class, tags={ "location", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "To get array of all locations ", response = AllLocations.class, tags={ "location", })
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = AllLocationsRequest.class),
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = AllLocations.class),
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response getAllLocations(@Context SecurityContext securityContext)
+    public Response getAllLocations(@ApiParam(value = "add product category to the system" ,required=true) Token body
+,@Context SecurityContext securityContext)
     throws NotFoundException {
-        return delegate.getAllLocations(securityContext);
+        return delegate.getAllLocations(body,securityContext);
     }
     @DELETE
     @Path("/searchLocation")
@@ -114,7 +117,7 @@ public class LocationApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response searchLocation(@ApiParam(value = "search a location in the system and return all products on that location" ,required=true) Barcode body
+    public Response searchLocation(@ApiParam(value = "search a location in the system and return all products on that location" ,required=true) LocationSearchRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.searchLocation(body,securityContext);
