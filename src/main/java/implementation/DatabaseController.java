@@ -5,12 +5,12 @@
  */
 package implementation;
 
-
 import io.swagger.model.AllCategories;
 import io.swagger.model.AllLocations;
 import io.swagger.model.Barcode;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
+import io.swagger.model.SearchRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,23 +20,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  *
  * @author Anders
  */
 public class DatabaseController {
-    
+
     // Map used to sync with object if same username is being requested access on.
     // Using Collections.synchronizedMap to ensure each thread have an up to date view on the map.
     private final Map<String, Object> objectLock = Collections.synchronizedMap(new HashMap());
     private static DatabaseController instance;
     private static final Object threadLock = new Object();
-    
+
     public static DatabaseController getInstance() throws SQLException {
         if (instance == null) {
-            synchronized(threadLock){
-                if(instance == null){
+            synchronized (threadLock) {
+                if (instance == null) {
                     instance = new DatabaseController();
                 }
             }
@@ -45,7 +44,7 @@ public class DatabaseController {
     }
 
     public void createProduct(Product product, Connection con) throws SQLException {
-        String query = "INSERT INTO public.products (name, category, maincolor, location, barcode, amount, canBeRestocked, mustBeRestocked, minAmount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, product.getName());
         statement.setString(2, product.getCategory());
@@ -60,7 +59,18 @@ public class DatabaseController {
         statement.close();
     }
 
-    public void addNewCategory(String newCategory, Connection con) throws SQLException{
+    public void deleteProduct(Product product, Connection con) throws SQLException {
+        String query = "DELETE FROM products WHERE barcode=" + product.getBarcode() + ";";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    public void editProduct(Product product, Connection con) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void addNewCategory(String newCategory, Connection con) throws SQLException {
         newCategory = newCategory.replace("\"", "");
         String query = "INSERT INTO category (category) VALUES (?);";
         PreparedStatement statement = con.prepareStatement(query);
@@ -68,14 +78,14 @@ public class DatabaseController {
         statement.executeUpdate();
         statement.close();
     }
-    
-    public AllCategories getAllCategories(Connection con) throws SQLException{
+
+    public AllCategories getAllCategories(Connection con) throws SQLException {
         AllCategories response = new AllCategories();
-        String query = "SELECT * FROM category";
+        String query = "SELECT * FROM category;";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             response.add(rs.getString("category"));
         }
         rs.close();
@@ -85,11 +95,11 @@ public class DatabaseController {
 
     public AllLocations getAllLocations(Connection con) throws SQLException {
         AllLocations response = new AllLocations();
-        String query = "SELECT * FROM location";
+        String query = "SELECT * FROM location;";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             response.add(rs.getString("location"));
         }
         rs.close();
@@ -102,7 +112,7 @@ public class DatabaseController {
         String query = "SELECT MAX(barcode) FROM products;";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        if(rs.next()){
+        if (rs.next()) {
             response.barcodeID((rs.getLong(1)) + 1L);
         }
         rs.close();
@@ -112,10 +122,10 @@ public class DatabaseController {
 
     public ProductArray getAllProducts(Connection con) throws SQLException {
         ProductArray response = new ProductArray();
-        String query = "SELECT * FROM products";
+        String query = "SELECT * FROM products;";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        while(rs.next()){
+        while (rs.next()) {
             Product product = new Product();
             product.setName(rs.getString("name"));
             product.setCategory(rs.getString("category"));
@@ -130,6 +140,32 @@ public class DatabaseController {
         }
         rs.close();
         statement.close();
+        return response;
+    }
+
+    public ProductArray searchProducts(String keyWord, Connection con) throws SQLException {
+        System.out.println(keyWord);
+        ProductArray response = new ProductArray();
+        String query = "SELECT * FROM products WHERE (name='%" + keyWord + "%' OR category='%" + keyWord + "%');";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        while (rs.next()) {
+            Product product = new Product();
+            product.setName(rs.getString("name"));
+            product.setCategory(rs.getString("category"));
+            product.setColor(rs.getString("maincolor"));
+            product.setLocation(rs.getString("location"));
+            product.setBarcode(rs.getLong("barcode"));
+            product.setAmount(rs.getInt("amount"));
+            product.setMinAmount(rs.getInt("minAmount"));
+            product.setMustBeRestock(rs.getBoolean("mustBeRestocked"));
+            product.setCanBeRestock(rs.getBoolean("canBeRestocked"));
+            response.add(product);
+            System.out.println(product.getName());
+        }
+        rs.close();
+        statement.close();
+        System.out.println(response.get(0).getName());
         return response;
     }
 }
