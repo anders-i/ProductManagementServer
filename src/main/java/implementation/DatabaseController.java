@@ -107,13 +107,19 @@ public class DatabaseController {
         return response;
     }
 
-    public Barcode generateBarcodeProduct(Connection con) throws SQLException {
+ public Barcode generateBarcodeProduct(Connection con) throws SQLException {
+        RandomNumber randomNumber = new RandomNumber();
         Barcode response = new Barcode();
-        String query = "SELECT MAX(barcode) FROM products;";
+        response.setBarcodeID(randomNumber.randomBarcode().getBarcodeID());
+        String query = "SELECT * FROM products WHERE barcode ='" + response.getBarcodeID() + "';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         if (rs.next()) {
-            response.barcodeID((rs.getLong(1)) + 1L);
+            response.setBarcodeID(generateBarcodeProduct(con).getBarcodeID());
+        } else {
+            rs.close();
+            statement.close();
+            return response;
         }
         rs.close();
         statement.close();
