@@ -45,18 +45,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             new DatabaseController().createProduct(body.getProduct(), con);
             return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
-            Product p = body.getProduct();
-            System.out.println(
-                    p.getName() + "\n"
-                    + p.getCategory() + "\n"
-                    + p.getColor() + "\n"
-                    + p.getLocation() + "\n"
-                    + p.getAmount() + "\n"
-                    + p.getBarcode() + "\n"
-                    + p.getMinAmount() + "\n"
-                    + p.isMustBeRestock() + "\n"
-                    + p.isCanBeRestock() + "\n");
-            e.printStackTrace();
             return Response.status(400).entity(e.toString()).build();
         }
     }
@@ -77,18 +65,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             new DatabaseController().editProduct(body.getProduct(), con);
             return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
-            Product p = body.getProduct();
-            System.out.println(
-                    p.getName() + "\n"
-                    + p.getCategory() + "\n"
-                    + p.getColor() + "\n"
-                    + p.getLocation() + "\n"
-                    + p.getAmount() + "\n"
-                    + p.getBarcode() + "\n"
-                    + p.getMinAmount() + "\n"
-                    + p.isMustBeRestock() + "\n"
-                    + p.isCanBeRestock() + "\n");
-            e.printStackTrace();
             return Response.status(400).entity(e.toString()).build();
         }
     }
@@ -122,14 +98,10 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            ProductArray response = new DatabaseController().searchProducts(body.getSearchString().getKeyword(), con);
+            ProductArray response = new DatabaseController().searchProducts("342", con); // need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
-            System.out.println(body.getSearchString().getKeyword().trim());
             return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
-        } catch (NullPointerException ex) {
-            System.out.println(body.getSearchString().getKeyword().trim());
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
-        }
+        } 
     }
 }

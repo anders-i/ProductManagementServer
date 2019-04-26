@@ -66,8 +66,11 @@ public class DatabaseController {
         statement.close();
     }
 
-    public void editProduct(Product product, Connection con) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void editProduct(Product product, Connection con) throws SQLException {
+        String query = "UPDATE products SET name='" + product.getName() + "', category='" + product.getCategory() + "', maincolor='" + product.getColor() + "', location='" + product.getLocation() + "', barcode='" + product.getBarcode() + "', amount='" + product.getAmount() + "', canberestocked='" + product.isCanBeRestock() + "', mustberestocked='" + product.isMustBeRestock() + "', minamount='" + product.getMinAmount() + "' WHERE barcode=" + product.getBarcode() +";";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.executeUpdate();
+        statement.close();
     }
 
     public void addNewCategory(String newCategory, Connection con) throws SQLException {
@@ -139,9 +142,9 @@ public class DatabaseController {
             product.setLocation(rs.getString("location"));
             product.setBarcode(rs.getLong("barcode"));
             product.setAmount(rs.getInt("amount"));
-            product.setMinAmount(rs.getInt("minAmount"));
-            product.setMustBeRestock(rs.getBoolean("mustBeRestocked"));
-            product.setCanBeRestock(rs.getBoolean("canBeRestocked"));
+            product.setMinAmount(rs.getInt("minamount"));
+            product.setMustBeRestock(rs.getBoolean("mustberestocked"));
+            product.setCanBeRestock(rs.getBoolean("canberestocked"));
             response.add(product);
         }
         rs.close();
@@ -150,9 +153,8 @@ public class DatabaseController {
     }
 
     public ProductArray searchProducts(String keyWord, Connection con) throws SQLException {
-        System.out.println(keyWord);
         ProductArray response = new ProductArray();
-        String query = "SELECT * FROM products WHERE (name='%" + keyWord + "%' OR category='%" + keyWord + "%');";
+        String query = "SELECT * FROM products WHERE name LIKE '%" + keyWord + "%' OR category LIKE '%" + keyWord + "%' OR maincolor LIKE '%" + keyWord + "%' OR location LIKE '%" + keyWord + "%' OR CAST(barcode AS text) LIKE '%" + keyWord + "%' OR CAST(amount AS text) LIKE '%" + keyWord + "%' OR CAST(canberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(mustberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(minamount AS text) LIKE '%" + keyWord + "%';";        
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         while (rs.next()) {
@@ -163,15 +165,14 @@ public class DatabaseController {
             product.setLocation(rs.getString("location"));
             product.setBarcode(rs.getLong("barcode"));
             product.setAmount(rs.getInt("amount"));
-            product.setMinAmount(rs.getInt("minAmount"));
-            product.setMustBeRestock(rs.getBoolean("mustBeRestocked"));
-            product.setCanBeRestock(rs.getBoolean("canBeRestocked"));
+            product.setMinAmount(rs.getInt("minamount"));
+            product.setMustBeRestock(rs.getBoolean("mustberestocked"));
+            product.setCanBeRestock(rs.getBoolean("canberestocked"));
             response.add(product);
-            System.out.println(product.getName());
         }
+        
         rs.close();
         statement.close();
-        System.out.println(response.get(0).getName());
         return response;
     }
 }
