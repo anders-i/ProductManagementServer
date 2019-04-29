@@ -98,8 +98,14 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            ProductArray response = new DatabaseController().searchProducts("342", con); // need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
-            return Response.ok().entity(response).build();
+            //if(!body.getSearchString().getKeyword().isEmpty()){
+                ProductArray response = new DatabaseController().searchProducts("vir", con); // need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
+                return Response.ok().entity(response).build();
+            //} else {
+//                ProductArray response = new DatabaseController().getAllProducts(con);
+//                System.out.println(body.getSearchString().getKeyword() + " server search else");
+//                return Response.ok().entity(response).build();
+            //}
         } catch (SQLException ex) {
             return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
         } 

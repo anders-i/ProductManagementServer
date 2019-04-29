@@ -13,7 +13,7 @@ import io.swagger.model.Barcode;
  */
 public class RandomNumber {
 
-    public Barcode randomBarcode() {
+    public Barcode randomProductBarcode() {
         Barcode barcode = new Barcode();
         Long leftLimit = 1000000000000L;
         Long rightLimit = 9999999999999L;

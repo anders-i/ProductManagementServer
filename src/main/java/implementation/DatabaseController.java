@@ -110,10 +110,10 @@ public class DatabaseController {
         return response;
     }
 
- public Barcode generateBarcodeProduct(Connection con) throws SQLException {
+    public Barcode generateBarcodeProduct(Connection con) throws SQLException {
         RandomNumber randomNumber = new RandomNumber();
         Barcode response = new Barcode();
-        response.setBarcodeID(randomNumber.randomBarcode().getBarcodeID());
+        response.setBarcodeID(randomNumber.randomProductBarcode().getBarcodeID());
         String query = "SELECT * FROM products WHERE barcode ='" + response.getBarcodeID() + "';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
@@ -128,6 +128,25 @@ public class DatabaseController {
         statement.close();
         return response;
     }
+    
+    public Barcode generateBarcodeLocation(Connection con) throws SQLException {
+        RandomNumber randomNumber = new RandomNumber();
+        Barcode response = new Barcode();
+        response.setBarcodeID(randomNumber.randomLocationBarcode().getBarcodeID());
+        String query = "SELECT * FROM location WHERE locationbarcode ='" + response.getBarcodeID() + "';";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        if (rs.next()) {
+            response.setBarcodeID(generateBarcodeLocation(con).getBarcodeID());
+        } else {
+            rs.close();
+            statement.close();
+            return response;
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }   
 
     public ProductArray getAllProducts(Connection con) throws SQLException {
         ProductArray response = new ProductArray();
@@ -174,5 +193,21 @@ public class DatabaseController {
         rs.close();
         statement.close();
         return response;
+    }
+
+    public void addLocation(String newLocationName, Connection con) throws SQLException {
+        String query = "INSERT INTO location VALUES (?, ?);";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, newLocationName);
+        statement.setLong(2, generateBarcodeLocation(con).getBarcodeID());
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    public void deleteLocation(String deleteLocationName, Connection con) throws SQLException {
+        String query = "DELETE FROM location WHERE location='" + deleteLocationName + "';";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.executeUpdate();
+        statement.close();
     }
 }

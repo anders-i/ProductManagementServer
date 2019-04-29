@@ -27,21 +27,30 @@ import javax.validation.constraints.*;
 public class LocationApiServiceImpl extends LocationApiService {
     @Override
     public Response addLocation(LocationRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            new DatabaseController().addLocation(body.getString(), con);
+            return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(e.toString()).build();
+        }
     }
     @Override
     public Response deleteLocation(LocationRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            new DatabaseController().deleteLocation(body.getString().trim(), con);
+            return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(400).entity(e.toString()).build();
+        }
     }
     @Override
     public Response getAllLocations(Token body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
             AllLocations response = new DatabaseController().getAllLocations(con);
             return Response.ok().entity(response).build();
-        } catch (SQLException ex) {
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, e.toString())).build();
         }
     }
     @Override
