@@ -1,5 +1,6 @@
 package io.swagger.api.impl;
 
+import dk.aiae.client.AuthManagementClient;
 import implementation.DataSource;
 import implementation.DatabaseController;
 import io.swagger.api.*;
@@ -25,6 +26,11 @@ import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
 public class LocationApiServiceImpl extends LocationApiService {
+    
+    public LocationApiServiceImpl() {
+        AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
+    }
+    
     @Override
     public Response addLocation(LocationRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -50,7 +56,7 @@ public class LocationApiServiceImpl extends LocationApiService {
             AllLocations response = new DatabaseController().getAllLocations(con);
             return Response.ok().entity(response).build();
         } catch (Exception e) {
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, e.toString())).build();
+            return Response.status(400).entity(e.toString()).build();
         }
     }
     @Override

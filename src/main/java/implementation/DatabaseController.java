@@ -59,6 +59,27 @@ public class DatabaseController {
         statement.close();
     }
 
+    public Product getProduct(Long barcode, Connection con) throws SQLException {
+        String query = "SELECT * FROM products WHERE barcode=" + barcode + ";";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        Product product = new Product();
+        while (rs.next()) {
+            product.setName(rs.getString("name"));
+            product.setCategory(rs.getString("category"));
+            product.setColor(rs.getString("maincolor"));
+            product.setLocation(rs.getString("location"));
+            product.setBarcode(rs.getLong("barcode"));
+            product.setAmount(rs.getInt("amount"));
+            product.setMinAmount(rs.getInt("minamount"));
+            product.setMustBeRestock(rs.getBoolean("mustberestocked"));
+            product.setCanBeRestock(rs.getBoolean("canberestocked"));
+        }
+        rs.close();
+        statement.close();
+        return product;
+    }
+
     public void deleteProduct(Product product, Connection con) throws SQLException {
         String query = "DELETE FROM products WHERE barcode=" + product.getBarcode() + ";";
         PreparedStatement statement = con.prepareStatement(query);
@@ -67,7 +88,7 @@ public class DatabaseController {
     }
 
     public void editProduct(Product product, Connection con) throws SQLException {
-        String query = "UPDATE products SET name='" + product.getName() + "', category='" + product.getCategory() + "', maincolor='" + product.getColor() + "', location='" + product.getLocation() + "', barcode='" + product.getBarcode() + "', amount='" + product.getAmount() + "', canberestocked='" + product.isCanBeRestock() + "', mustberestocked='" + product.isMustBeRestock() + "', minamount='" + product.getMinAmount() + "' WHERE barcode=" + product.getBarcode() +";";
+        String query = "UPDATE products SET name='" + product.getName() + "', category='" + product.getCategory() + "', maincolor='" + product.getColor() + "', location='" + product.getLocation() + "', barcode='" + product.getBarcode() + "', amount='" + product.getAmount() + "', canberestocked='" + product.isCanBeRestock() + "', mustberestocked='" + product.isMustBeRestock() + "', minamount='" + product.getMinAmount() + "' WHERE barcode=" + product.getBarcode() + ";";
         PreparedStatement statement = con.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -128,7 +149,7 @@ public class DatabaseController {
         statement.close();
         return response;
     }
-    
+
     public Barcode generateBarcodeLocation(Connection con) throws SQLException {
         RandomNumber randomNumber = new RandomNumber();
         Barcode response = new Barcode();
@@ -146,7 +167,7 @@ public class DatabaseController {
         rs.close();
         statement.close();
         return response;
-    }   
+    }
 
     public ProductArray getAllProducts(Connection con) throws SQLException {
         ProductArray response = new ProductArray();
@@ -173,7 +194,7 @@ public class DatabaseController {
 
     public ProductArray searchProducts(String keyWord, Connection con) throws SQLException {
         ProductArray response = new ProductArray();
-        String query = "SELECT * FROM products WHERE name LIKE '%" + keyWord + "%' OR category LIKE '%" + keyWord + "%' OR maincolor LIKE '%" + keyWord + "%' OR location LIKE '%" + keyWord + "%' OR CAST(barcode AS text) LIKE '%" + keyWord + "%' OR CAST(amount AS text) LIKE '%" + keyWord + "%' OR CAST(canberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(mustberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(minamount AS text) LIKE '%" + keyWord + "%';";        
+        String query = "SELECT * FROM products WHERE name LIKE '%" + keyWord + "%' OR category LIKE '%" + keyWord + "%' OR maincolor LIKE '%" + keyWord + "%' OR location LIKE '%" + keyWord + "%' OR CAST(barcode AS text) LIKE '%" + keyWord + "%' OR CAST(amount AS text) LIKE '%" + keyWord + "%' OR CAST(canberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(mustberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(minamount AS text) LIKE '%" + keyWord + "%';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         while (rs.next()) {
@@ -189,7 +210,7 @@ public class DatabaseController {
             product.setCanBeRestock(rs.getBoolean("canberestocked"));
             response.add(product);
         }
-        
+
         rs.close();
         statement.close();
         return response;
@@ -210,4 +231,5 @@ public class DatabaseController {
         statement.executeUpdate();
         statement.close();
     }
+
 }

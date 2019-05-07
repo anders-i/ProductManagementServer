@@ -1,5 +1,6 @@
 package io.swagger.api.impl;
 
+import dk.aiae.client.AuthManagementClient;
 import implementation.DataSource;
 import implementation.DatabaseController;
 import io.swagger.api.*;
@@ -28,6 +29,10 @@ import javax.validation.constraints.*;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
 public class ProductsApiServiceImpl extends ProductsApiService {
+
+    public ProductsApiServiceImpl() {
+        AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
+    }
 
     @Override
     public Response addCategory(CategoryRequest body, SecurityContext securityContext) throws NotFoundException {
@@ -75,7 +80,7 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             AllCategories response = new DatabaseController().getAllCategories(con);
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+            return Response.status(400).entity(ex.toString()).build();
         }
     }
 
@@ -85,29 +90,27 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             ProductArray response = new DatabaseController().getAllProducts(con);
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+            return Response.status(400).entity(ex.toString()).build();
         }
     }
 
     @Override
     public Response getProduct(ProductRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            Product response = new DatabaseController().getProduct(5439860856301L, con); // TODO FIX when swagger 0.3 same problem as searchProducts
+            return Response.ok().entity(response).build();
+        } catch (SQLException ex) {
+            return Response.status(400).entity(ex.toString()).build();
+        }
     }
 
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            //if(!body.getSearchString().getKeyword().isEmpty()){
-                ProductArray response = new DatabaseController().searchProducts("vir", con); // need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
-                return Response.ok().entity(response).build();
-            //} else {
-//                ProductArray response = new DatabaseController().getAllProducts(con);
-//                System.out.println(body.getSearchString().getKeyword() + " server search else");
-//                return Response.ok().entity(response).build();
-            //}
+            ProductArray response = new DatabaseController().searchProducts("vir", con); // TODO need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
+            return Response.ok().entity(response).build();
         } catch (SQLException ex) {
-            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
-        } 
+            return Response.status(400).entity(ex.toString()).build();
+        }
     }
 }
