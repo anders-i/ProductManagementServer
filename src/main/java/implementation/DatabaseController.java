@@ -87,8 +87,8 @@ public class DatabaseController {
         statement.close();
     }
 
-    public void editProduct(Product product, Connection con) throws SQLException {
-        String query = "UPDATE products SET name='" + product.getName() + "', category='" + product.getCategory() + "', maincolor='" + product.getColor() + "', location='" + product.getLocation() + "', barcode='" + product.getBarcode() + "', amount='" + product.getAmount() + "', canberestocked='" + product.isCanBeRestock() + "', mustberestocked='" + product.isMustBeRestock() + "', minamount='" + product.getMinAmount() + "' WHERE barcode=" + product.getBarcode() + ";";
+    public void editProduct(Product product, Barcode barcode, Connection con) throws SQLException {
+        String query = "UPDATE products SET name='" + product.getName() + "', category='" + product.getCategory() + "', maincolor='" + product.getColor() + "', location='" + product.getLocation() + "', barcode='" + product.getBarcode() + "', amount='" + product.getAmount() + "', canberestocked='" + product.isCanBeRestock() + "', mustberestocked='" + product.isMustBeRestock() + "', minamount='" + product.getMinAmount() + "' WHERE barcode=" + barcode.getBarcodeID() + ";";
         PreparedStatement statement = con.prepareStatement(query);
         statement.executeUpdate();
         statement.close();

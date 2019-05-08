@@ -8,6 +8,9 @@ import io.swagger.model.*;
 
 import io.swagger.model.AllCategories;
 import io.swagger.model.CategoryRequest;
+import io.swagger.model.EditListOfProductsRequest;
+import io.swagger.model.EditProductRequest;
+import io.swagger.model.GetProductRequest;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
 import io.swagger.model.ProductRequest;
@@ -26,14 +29,13 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
 public class ProductsApiServiceImpl extends ProductsApiService {
-
+    
     public ProductsApiServiceImpl() {
         AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
     }
-
+    
     @Override
     public Response addCategory(CategoryRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -43,7 +45,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(e.toString()).build();
         }
     }
-
     @Override
     public Response addProduct(ProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -53,7 +54,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(e.toString()).build();
         }
     }
-
     @Override
     public Response deleteProduct(ProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -63,17 +63,20 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(e.toString()).build();
         }
     }
-
     @Override
-    public Response editProduct(ProductRequest body, SecurityContext securityContext) throws NotFoundException {
+    public Response editLocationOnMultipleProducts(EditListOfProductsRequest body, SecurityContext securityContext) throws NotFoundException {
+        // do some magic!
+        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+    }
+    @Override
+    public Response editProduct(EditProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            new DatabaseController().editProduct(body.getProduct(), con);
+            new DatabaseController().editProduct(body.getEditedProduct(), body.getOldBarcode(), con);
             return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
             return Response.status(400).entity(e.toString()).build();
         }
     }
-
     @Override
     public Response getAllCategories(Token body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -83,7 +86,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(ex.toString()).build();
         }
     }
-
     @Override
     public Response getAllProducts(Token body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
@@ -93,9 +95,8 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(ex.toString()).build();
         }
     }
-
     @Override
-    public Response getProduct(ProductRequest body, SecurityContext securityContext) throws NotFoundException {
+    public Response getProduct(GetProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
             Product response = new DatabaseController().getProduct(5439860856301L, con); // TODO FIX when swagger 0.3 same problem as searchProducts
             return Response.ok().entity(response).build();
@@ -103,7 +104,6 @@ public class ProductsApiServiceImpl extends ProductsApiService {
             return Response.status(400).entity(ex.toString()).build();
         }
     }
-
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {

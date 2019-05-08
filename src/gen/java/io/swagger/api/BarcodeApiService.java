@@ -16,8 +16,7 @@ import java.io.InputStream;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
 public abstract class BarcodeApiService {
-    public abstract Response generateBarcodeLocation(Token body,SecurityContext securityContext) throws NotFoundException;
     public abstract Response generateBarcodeProduct(Token body,SecurityContext securityContext) throws NotFoundException;
 }

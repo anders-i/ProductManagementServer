@@ -16,28 +16,19 @@ import io.swagger.api.NotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
 public class BarcodeApiServiceImpl extends BarcodeApiService {
-
+    
     public BarcodeApiServiceImpl() {
         AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
     }
-
-    @Override
-    public Response generateBarcodeLocation(Token body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
-    }
-
+    
     @Override
     public Response generateBarcodeProduct(Token body, SecurityContext securityContext) throws NotFoundException {
         try{

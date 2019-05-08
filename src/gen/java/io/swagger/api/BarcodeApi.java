@@ -30,7 +30,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the barcode API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
 public class BarcodeApi  {
    private final BarcodeApiService delegate;
 
@@ -55,22 +55,6 @@ public class BarcodeApi  {
       this.delegate = delegate;
    }
 
-    @POST
-    @Path("/generateBarcodeLocation")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "When you want create a new barcode for a location. ", response = Barcode.class, tags={ "barcode", })
-    @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = Barcode.class),
-        
-        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
-        
-        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response generateBarcodeLocation(@ApiParam(value = "Request and Generate a new barcode for a location" ,required=true) Token body
-,@Context SecurityContext securityContext)
-    throws NotFoundException {
-        return delegate.generateBarcodeLocation(body,securityContext);
-    }
     @POST
     @Path("/")
     @Consumes({ "application/json" })

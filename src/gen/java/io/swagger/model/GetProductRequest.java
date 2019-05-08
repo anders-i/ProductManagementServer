@@ -18,40 +18,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Barcode;
 import io.swagger.model.Token;
 import javax.validation.constraints.*;
 
 /**
- * LocationRequest
+ * GetProductRequest
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
-public class LocationRequest   {
-  @JsonProperty("string")
-  private String string = null;
+public class GetProductRequest   {
+  @JsonProperty("product")
+  private Barcode product = null;
 
   @JsonProperty("token")
   private Token token = null;
 
-  public LocationRequest string(String string) {
-    this.string = string;
+  public GetProductRequest product(Barcode product) {
+    this.product = product;
     return this;
   }
 
   /**
-   * Get string
-   * @return string
+   * Get product
+   * @return product
    **/
-  @JsonProperty("string")
+  @JsonProperty("product")
   @ApiModelProperty(value = "")
-  public String getString() {
-    return string;
+  public Barcode getProduct() {
+    return product;
   }
 
-  public void setString(String string) {
-    this.string = string;
+  public void setProduct(Barcode product) {
+    this.product = product;
   }
 
-  public LocationRequest token(Token token) {
+  public GetProductRequest token(Token token) {
     this.token = token;
     return this;
   }
@@ -79,23 +80,23 @@ public class LocationRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LocationRequest locationRequest = (LocationRequest) o;
-    return Objects.equals(this.string, locationRequest.string) &&
-        Objects.equals(this.token, locationRequest.token);
+    GetProductRequest getProductRequest = (GetProductRequest) o;
+    return Objects.equals(this.product, getProductRequest.product) &&
+        Objects.equals(this.token, getProductRequest.token);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(string, token);
+    return Objects.hash(product, token);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LocationRequest {\n");
+    sb.append("class GetProductRequest {\n");
     
-    sb.append("    string: ").append(toIndentedString(string)).append("\n");
+    sb.append("    product: ").append(toIndentedString(product)).append("\n");
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -18,40 +18,64 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Barcode;
+import io.swagger.model.Product;
 import io.swagger.model.Token;
 import javax.validation.constraints.*;
 
 /**
- * LocationRequest
+ * EditProductRequest
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
-public class LocationRequest   {
-  @JsonProperty("string")
-  private String string = null;
+public class EditProductRequest   {
+  @JsonProperty("editedProduct")
+  private Product editedProduct = null;
+
+  @JsonProperty("oldBarcode")
+  private Barcode oldBarcode = null;
 
   @JsonProperty("token")
   private Token token = null;
 
-  public LocationRequest string(String string) {
-    this.string = string;
+  public EditProductRequest editedProduct(Product editedProduct) {
+    this.editedProduct = editedProduct;
     return this;
   }
 
   /**
-   * Get string
-   * @return string
+   * Get editedProduct
+   * @return editedProduct
    **/
-  @JsonProperty("string")
+  @JsonProperty("editedProduct")
   @ApiModelProperty(value = "")
-  public String getString() {
-    return string;
+  public Product getEditedProduct() {
+    return editedProduct;
   }
 
-  public void setString(String string) {
-    this.string = string;
+  public void setEditedProduct(Product editedProduct) {
+    this.editedProduct = editedProduct;
   }
 
-  public LocationRequest token(Token token) {
+  public EditProductRequest oldBarcode(Barcode oldBarcode) {
+    this.oldBarcode = oldBarcode;
+    return this;
+  }
+
+  /**
+   * Get oldBarcode
+   * @return oldBarcode
+   **/
+  @JsonProperty("oldBarcode")
+  @ApiModelProperty(value = "")
+  public Barcode getOldBarcode() {
+    return oldBarcode;
+  }
+
+  public void setOldBarcode(Barcode oldBarcode) {
+    this.oldBarcode = oldBarcode;
+  }
+
+  public EditProductRequest token(Token token) {
     this.token = token;
     return this;
   }
@@ -79,23 +103,25 @@ public class LocationRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LocationRequest locationRequest = (LocationRequest) o;
-    return Objects.equals(this.string, locationRequest.string) &&
-        Objects.equals(this.token, locationRequest.token);
+    EditProductRequest editProductRequest = (EditProductRequest) o;
+    return Objects.equals(this.editedProduct, editProductRequest.editedProduct) &&
+        Objects.equals(this.oldBarcode, editProductRequest.oldBarcode) &&
+        Objects.equals(this.token, editProductRequest.token);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(string, token);
+    return Objects.hash(editedProduct, oldBarcode, token);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LocationRequest {\n");
+    sb.append("class EditProductRequest {\n");
     
-    sb.append("    string: ").append(toIndentedString(string)).append("\n");
+    sb.append("    editedProduct: ").append(toIndentedString(editedProduct)).append("\n");
+    sb.append("    oldBarcode: ").append(toIndentedString(oldBarcode)).append("\n");
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -9,6 +9,9 @@ import io.swagger.jaxrs.*;
 
 import io.swagger.model.AllCategories;
 import io.swagger.model.CategoryRequest;
+import io.swagger.model.EditListOfProductsRequest;
+import io.swagger.model.EditProductRequest;
+import io.swagger.model.GetProductRequest;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
 import io.swagger.model.ProductRequest;
@@ -35,7 +38,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the products API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-20T13:28:13.240Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
 public class ProductsApi  {
    private final ProductsApiService delegate;
 
@@ -109,6 +112,22 @@ public class ProductsApi  {
         return delegate.deleteProduct(body,securityContext);
     }
     @PUT
+    @Path("/editLocationOnMultipleProducts")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "When you want to edit a list of products to have a new location. ", response = Void.class, tags={ "product", })
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = Void.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
+    public Response editLocationOnMultipleProducts(@ApiParam(value = "edit list off products to new location in system" ,required=true) EditListOfProductsRequest body
+,@Context SecurityContext securityContext)
+    throws NotFoundException {
+        return delegate.editLocationOnMultipleProducts(body,securityContext);
+    }
+    @PUT
     @Path("/editProduct")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
@@ -119,7 +138,7 @@ public class ProductsApi  {
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response editProduct(@ApiParam(value = "edit product from system" ,required=true) ProductRequest body
+    public Response editProduct(@ApiParam(value = "edit product from system" ,required=true) EditProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.editProduct(body,securityContext);
@@ -160,14 +179,14 @@ public class ProductsApi  {
     @Path("/getProduct")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "get a single product ", response = Product.class, tags={ "product", })
+    @io.swagger.annotations.ApiOperation(value = "get a single product", notes = "", response = Product.class, tags={ "product", })
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = Product.class),
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         
         @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
-    public Response getProduct(@ApiParam(value = "get product from system" ,required=true) ProductRequest body
+    public Response getProduct(@ApiParam(value = "get product from system" ,required=true) GetProductRequest body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.getProduct(body,securityContext);
