@@ -23,7 +23,7 @@ import javax.validation.constraints.*;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
 public class Product   {
   @JsonProperty("Name")
   private String name = null;

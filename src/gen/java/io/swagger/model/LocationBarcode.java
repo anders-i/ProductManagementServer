@@ -14,16 +14,39 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import io.swagger.model.Product;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * ProductArray
+ * LocationBarcode
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
-public class ProductArray extends ArrayList<Product>  {
+public class LocationBarcode   {
+  @JsonProperty("locationBarcodeID")
+  private Long locationBarcodeID = null;
+
+  public LocationBarcode locationBarcodeID(Long locationBarcodeID) {
+    this.locationBarcodeID = locationBarcodeID;
+    return this;
+  }
+
+  /**
+   * Location barcode
+   * @return locationBarcodeID
+   **/
+  @JsonProperty("locationBarcodeID")
+  @ApiModelProperty(value = "Location barcode")
+  public Long getLocationBarcodeID() {
+    return locationBarcodeID;
+  }
+
+  public void setLocationBarcodeID(Long locationBarcodeID) {
+    this.locationBarcodeID = locationBarcodeID;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -33,20 +56,22 @@ public class ProductArray extends ArrayList<Product>  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    return true;
+    LocationBarcode locationBarcode = (LocationBarcode) o;
+    return Objects.equals(this.locationBarcodeID, locationBarcode.locationBarcodeID);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode());
+    return Objects.hash(locationBarcodeID);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ProductArray {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("class LocationBarcode {\n");
+    
+    sb.append("    locationBarcodeID: ").append(toIndentedString(locationBarcodeID)).append("\n");
     sb.append("}");
     return sb.toString();
   }

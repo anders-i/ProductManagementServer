@@ -18,21 +18,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.LocationBarcode;
 import io.swagger.model.Token;
 import javax.validation.constraints.*;
 
 /**
  * AllProductsOnLocationRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
 public class AllProductsOnLocationRequest   {
   @JsonProperty("location")
-  private String location = null;
+  private LocationBarcode location = null;
 
   @JsonProperty("token")
   private Token token = null;
 
-  public AllProductsOnLocationRequest location(String location) {
+  public AllProductsOnLocationRequest location(LocationBarcode location) {
     this.location = location;
     return this;
   }
@@ -43,11 +44,11 @@ public class AllProductsOnLocationRequest   {
    **/
   @JsonProperty("location")
   @ApiModelProperty(value = "")
-  public String getLocation() {
+  public LocationBarcode getLocation() {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(LocationBarcode location) {
     this.location = location;
   }
 

@@ -234,13 +234,13 @@ public class DatabaseController {
     }
 
     public void editLocationOnMultipleProducts(EditListOfProductsRequest body, Connection con) throws SQLException {
-        String query = "SELECT * FROM location WHERE locationbarcode=" + body.getNewLocationBarcode().getBarcodeID() +";";
+        String query = "SELECT * FROM location WHERE locationbarcode=" + body.getNewLocationBarcode().getBarcodeID() + ";";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
-        while(rs.next()) {
+        while (rs.next()) {
             String locationName = rs.getString("location").trim();
-            for(int i = 0; i < body.getProductList().size(); i++){
-                String query2 = "UPDATE products SET location='" + locationName + "' WHERE barcode=" + body.getProductList().get(i).getBarcode() +";";
+            for (int i = 0; i < body.getProductList().size(); i++) {
+                String query2 = "UPDATE products SET location='" + locationName + "' WHERE barcode=" + body.getProductList().get(i).getBarcode() + ";";
                 PreparedStatement statement2 = con.prepareStatement(query2);
                 statement2.executeUpdate();
                 statement2.close();
@@ -249,5 +249,39 @@ public class DatabaseController {
         rs.close();
         statement.close();
     }
-    
+
+    public ProductArray getAllProductsOnLocation(Long locationBarcodeID, Connection con) throws SQLException {
+        ProductArray response = new ProductArray();
+        String query1 = "SELECT * FROM location WHERE locationbarcode=" + locationBarcodeID + ";";
+        Statement statement1 = con.createStatement();
+        ResultSet rs1 = statement1.executeQuery(query1);
+        
+        while (rs1.next()) {
+            String locationName = rs1.getString("location").trim();
+            String query2 = "SELECT * FROM products WHERE location='" + locationName + "';";
+            Statement statement2 = con.createStatement();
+            ResultSet rs2 = statement2.executeQuery(query2);
+
+            while (rs2.next()) {
+                Product product = new Product();
+                product.setName(rs2.getString("name"));
+                product.setCategory(rs2.getString("category"));
+                product.setColor(rs2.getString("maincolor"));
+                product.setLocation(rs2.getString("location"));
+                product.setBarcode(rs2.getLong("barcode"));
+                product.setAmount(rs2.getInt("amount"));
+                product.setMinAmount(rs2.getInt("minamount"));
+                product.setMustBeRestock(rs2.getBoolean("mustberestocked"));
+                product.setCanBeRestock(rs2.getBoolean("canberestocked"));
+                response.add(product);
+            }
+            rs2.close();
+            statement2.close();
+        }
+
+        rs1.close();
+        statement1.close();
+        return response;
+    }
+
 }
