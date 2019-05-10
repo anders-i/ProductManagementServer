@@ -22,16 +22,17 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
+
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
 public class BarcodeApiServiceImpl extends BarcodeApiService {
-    
+
     public BarcodeApiServiceImpl() {
         AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
     }
-    
+
     @Override
     public Response generateBarcodeProduct(Token body, SecurityContext securityContext) throws NotFoundException {
-        try{
+        try {
             AuthManagementClient.getNewInstance().checkAccessToken(TokenConverter.getToken(body));
             try (Connection con = DataSource.getInstance().getConnection()) {
                 Barcode response = new DatabaseController().generateBarcodeProduct(con);

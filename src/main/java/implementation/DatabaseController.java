@@ -238,9 +238,9 @@ public class DatabaseController {
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         while(rs.next()) {
-            String locationName = rs.getString("location");
+            String locationName = rs.getString("location").trim();
             for(int i = 0; i < body.getProductList().size(); i++){
-                String query2 = "UPDATE products SET location=" + locationName + "WHERE barcode=" + body.getProductList().get(i).getBarcode() +";";
+                String query2 = "UPDATE products SET location='" + locationName + "' WHERE barcode=" + body.getProductList().get(i).getBarcode() +";";
                 PreparedStatement statement2 = con.prepareStatement(query2);
                 statement2.executeUpdate();
                 statement2.close();

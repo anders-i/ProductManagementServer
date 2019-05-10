@@ -19,7 +19,7 @@ import java.io.InputStream;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
 public abstract class LocationApiService {
     public abstract Response addLocation(LocationRequest body,SecurityContext securityContext) throws NotFoundException;
     public abstract Response deleteLocation(LocationRequest body,SecurityContext securityContext) throws NotFoundException;

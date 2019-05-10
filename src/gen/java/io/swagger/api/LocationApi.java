@@ -33,7 +33,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the location API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
 public class LocationApi  {
    private final LocationApiService delegate;
 
@@ -106,7 +106,7 @@ public class LocationApi  {
     throws NotFoundException {
         return delegate.getAllLocations(body,securityContext);
     }
-    @DELETE
+    @POST
     @Path("/searchLocation")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })

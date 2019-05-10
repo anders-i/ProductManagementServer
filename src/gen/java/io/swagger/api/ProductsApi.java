@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.jaxrs.*;
 
 import io.swagger.model.AllCategories;
+import io.swagger.model.AllProductsOnLocationRequest;
 import io.swagger.model.CategoryRequest;
 import io.swagger.model.EditListOfProductsRequest;
 import io.swagger.model.EditProductRequest;
@@ -38,7 +39,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the products API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
 public class ProductsApi  {
    private final ProductsApiService delegate;
 
@@ -111,7 +112,7 @@ public class ProductsApi  {
     throws NotFoundException {
         return delegate.deleteProduct(body,securityContext);
     }
-    @PUT
+    @POST
     @Path("/editLocationOnMultipleProducts")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
@@ -175,11 +176,27 @@ public class ProductsApi  {
     throws NotFoundException {
         return delegate.getAllProducts(body,securityContext);
     }
-    @GET
+    @POST
+    @Path("/getAllProductsOnLocation")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "returns arraylist with all products from a specific location", notes = "", response = ProductArray.class, tags={ "product", })
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = ProductArray.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Void.class) })
+    public Response getAllProductsOnLocation(@ApiParam(value = "To get array with all products on location" ,required=true) AllProductsOnLocationRequest body
+,@Context SecurityContext securityContext)
+    throws NotFoundException {
+        return delegate.getAllProductsOnLocation(body,securityContext);
+    }
+    @POST
     @Path("/getProduct")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "get a single product", notes = "", response = Product.class, tags={ "product", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "get a single product", response = Product.class, tags={ "product", })
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = Product.class),
         
@@ -191,7 +208,7 @@ public class ProductsApi  {
     throws NotFoundException {
         return delegate.getProduct(body,securityContext);
     }
-    @GET
+    @POST
     @Path("/searchProducts")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })

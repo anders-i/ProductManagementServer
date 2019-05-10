@@ -7,6 +7,7 @@ import io.swagger.api.*;
 import io.swagger.model.*;
 
 import io.swagger.model.AllCategories;
+import io.swagger.model.AllProductsOnLocationRequest;
 import io.swagger.model.CategoryRequest;
 import io.swagger.model.EditListOfProductsRequest;
 import io.swagger.model.EditProductRequest;
@@ -29,7 +30,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-08T09:46:34.297Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T09:44:43.395Z")
 public class ProductsApiServiceImpl extends ProductsApiService {
     
     public ProductsApiServiceImpl() {
@@ -100,9 +101,14 @@ public class ProductsApiServiceImpl extends ProductsApiService {
         }
     }
     @Override
+    public Response getAllProductsOnLocation(AllProductsOnLocationRequest body, SecurityContext securityContext) throws NotFoundException {
+        // do some magic!
+        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+    }
+    @Override
     public Response getProduct(GetProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            Product response = new DatabaseController().getProduct(1597683728284L, con); // TODO FIX when swagger 0.3 same problem as searchProducts
+            Product response = new DatabaseController().getProduct(body.getProduct().getBarcodeID(), con); // TODO FIX when swagger 0.3 same problem as searchProducts
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
             return Response.status(400).entity(ex.toString()).build();
@@ -111,10 +117,11 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            System.out.println(body.getSearchString() + " her");
-            ProductArray response = new DatabaseController().searchProducts("an", con); // TODO need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
+            //System.out.println(body.getSearchString() + " her 1");
+            ProductArray response = new DatabaseController().searchProducts(body.getSearchString(), con); // TODO need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
+            //System.out.println(body.getSearchString() + " her 2");
             return Response.status(400).entity(ex.toString()).build();
         }
     }
