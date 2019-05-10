@@ -8,6 +8,7 @@ package implementation;
 import io.swagger.model.AllCategories;
 import io.swagger.model.AllLocations;
 import io.swagger.model.Barcode;
+import io.swagger.model.EditListOfProductsRequest;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
 import io.swagger.model.SearchRequest;
@@ -232,4 +233,21 @@ public class DatabaseController {
         statement.close();
     }
 
+    public void editLocationOnMultipleProducts(EditListOfProductsRequest body, Connection con) throws SQLException {
+        String query = "SELECT * FROM location WHERE locationbarcode=" + body.getNewLocationBarcode().getBarcodeID() +";";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        while(rs.next()) {
+            String locationName = rs.getString("location");
+            for(int i = 0; i < body.getProductList().size(); i++){
+                String query2 = "UPDATE products SET location=" + locationName + "WHERE barcode=" + body.getProductList().get(i).getBarcode() +";";
+                PreparedStatement statement2 = con.prepareStatement(query2);
+                statement2.executeUpdate();
+                statement2.close();
+            }
+        }
+        rs.close();
+        statement.close();
+    }
+    
 }

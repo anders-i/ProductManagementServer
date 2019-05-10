@@ -37,7 +37,7 @@ public class BarcodeApiServiceImpl extends BarcodeApiService {
                 Barcode response = new DatabaseController().generateBarcodeProduct(con);
                 return Response.ok().entity(response).build();
             } catch (SQLException ex) {
-                return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, ex.toString())).build();
+                return Response.status(400).entity(ex.toString()).build();
             }
         } catch (Exception ex) {
             return Response.status(400).entity(ex.toString()).build();

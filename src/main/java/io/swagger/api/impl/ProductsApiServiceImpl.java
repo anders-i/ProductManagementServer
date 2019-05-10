@@ -65,8 +65,12 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     }
     @Override
     public Response editLocationOnMultipleProducts(EditListOfProductsRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try (Connection con = DataSource.getInstance().getConnection()) {
+            new DatabaseController().editLocationOnMultipleProducts(body, con);
+            return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(e.toString()).build();
+        }
     }
     @Override
     public Response editProduct(EditProductRequest body, SecurityContext securityContext) throws NotFoundException {
@@ -98,7 +102,7 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response getProduct(GetProductRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            Product response = new DatabaseController().getProduct(5439860856301L, con); // TODO FIX when swagger 0.3 same problem as searchProducts
+            Product response = new DatabaseController().getProduct(1597683728284L, con); // TODO FIX when swagger 0.3 same problem as searchProducts
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
             return Response.status(400).entity(ex.toString()).build();
@@ -107,7 +111,8 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response searchProducts(SearchRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            ProductArray response = new DatabaseController().searchProducts("vir", con); // TODO need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
+            System.out.println(body.getSearchString() + " her");
+            ProductArray response = new DatabaseController().searchProducts("an", con); // TODO need to be body.getSearchString when swagger 0.3 version of ProductManagement i out
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
             return Response.status(400).entity(ex.toString()).build();
