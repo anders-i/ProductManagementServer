@@ -7,7 +7,7 @@ package implementation;
 
 /**
  *
- * @author herin
+ * @author Anders
  */
 public class TokenConverter {
     
