@@ -16,6 +16,8 @@ import io.swagger.api.NotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
@@ -36,9 +38,11 @@ public class BarcodeApiServiceImpl extends BarcodeApiService {
                 Barcode response = new DatabaseController().generateBarcodeProduct(con);
                 return Response.ok().entity(response).build();
             } catch (SQLException ex) {
+                Logger.getLogger(BarcodeApiServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
                 return Response.status(400).entity(ex.toString()).build();
             }
-        } catch (Exception ex) {
+        } catch (io.swagger.client.ApiException ex) {
+            Logger.getLogger(BarcodeApiServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(400).entity(ex.toString()).build();
         }
     }

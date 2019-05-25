@@ -194,8 +194,9 @@ public class DatabaseController {
     }
 
     public ProductArray searchProducts(String keyWord, Connection con) throws SQLException {
+        String keyWordLowerCase = keyWord.toLowerCase();
         ProductArray response = new ProductArray();
-        String query = "SELECT * FROM products WHERE name LIKE '%" + keyWord + "%' OR category LIKE '%" + keyWord + "%' OR maincolor LIKE '%" + keyWord + "%' OR location LIKE '%" + keyWord + "%' OR CAST(barcode AS text) LIKE '%" + keyWord + "%' OR CAST(amount AS text) LIKE '%" + keyWord + "%' OR CAST(canberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(mustberestocked AS text) LIKE '%" + keyWord + "%' OR CAST(minamount AS text) LIKE '%" + keyWord + "%';";
+        String query = "SELECT * FROM products WHERE LOWER(name) LIKE '%" + keyWordLowerCase + "%' OR LOWER(category) LIKE '%" + keyWordLowerCase + "%' OR LOWER(maincolor) LIKE '%" + keyWordLowerCase + "%' OR LOWER(location) LIKE '%" + keyWordLowerCase + "%' OR CAST(barcode AS text) LIKE '%" + keyWordLowerCase + "%' OR CAST(amount AS text) LIKE '%" + keyWordLowerCase + "%' OR CAST(canberestocked AS text) LIKE '%" + keyWordLowerCase + "%' OR CAST(mustberestocked AS text) LIKE '%" + keyWordLowerCase + "%' OR CAST(minamount AS text) LIKE '%" + keyWordLowerCase + "%';";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         while (rs.next()) {
