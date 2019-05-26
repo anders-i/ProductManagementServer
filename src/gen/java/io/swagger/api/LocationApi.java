@@ -10,7 +10,6 @@ import io.swagger.jaxrs.*;
 import io.swagger.model.AllLocations;
 import io.swagger.model.LocationRequest;
 import io.swagger.model.LocationSearchRequest;
-import io.swagger.model.ProductArray;
 import io.swagger.model.Token;
 
 import java.util.Map;
@@ -33,7 +32,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the location API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-26T10:45:56.712Z")
 public class LocationApi  {
    private final LocationApiService delegate;
 
@@ -90,7 +89,7 @@ public class LocationApi  {
     throws NotFoundException {
         return delegate.deleteLocation(body,securityContext);
     }
-    @GET
+    @POST
     @Path("/getAllLocations")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
@@ -110,9 +109,9 @@ public class LocationApi  {
     @Path("/searchLocation")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "", notes = "To find/search a location and return array with all products on that location ", response = ProductArray.class, tags={ "location", })
+    @io.swagger.annotations.ApiOperation(value = "", notes = "To find/search a location and return array with all products on that location ", response = AllLocations.class, tags={ "location", })
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = ProductArray.class),
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = AllLocations.class),
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = Void.class),
         

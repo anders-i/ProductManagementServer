@@ -33,10 +33,8 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-26T10:45:56.712Z")
 public class ProductsApiServiceImpl extends ProductsApiService {
-
     public ProductsApiServiceImpl() {
         AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
     }
@@ -127,7 +125,7 @@ public class ProductsApiServiceImpl extends ProductsApiService {
     @Override
     public Response getAllProductsOnLocation(AllProductsOnLocationRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            ProductArray response = new DatabaseController().getAllProductsOnLocation(body.getLocation().getLocationBarcodeID(), con);
+            ProductArray response = new DatabaseController().getAllProductsOnLocation(body.getLocation().getBarcodeID(), con);
             return Response.ok().entity(response).build();
         } catch (SQLException ex) {
             return Response.status(400).entity(ex.toString()).build();

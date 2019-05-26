@@ -9,7 +9,6 @@ import io.swagger.model.*;
 import io.swagger.model.AllLocations;
 import io.swagger.model.LocationRequest;
 import io.swagger.model.LocationSearchRequest;
-import io.swagger.model.ProductArray;
 import io.swagger.model.Token;
 
 import java.util.List;
@@ -23,9 +22,8 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-26T10:45:56.712Z")
 public class LocationApiServiceImpl extends LocationApiService {
-    
     public LocationApiServiceImpl() {
         AuthManagementClient.setBasePath("http://127.0.0.1:30000/authenticationManagement");
     }
@@ -33,7 +31,7 @@ public class LocationApiServiceImpl extends LocationApiService {
     @Override
     public Response addLocation(LocationRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            new DatabaseController().addLocation(body.getString(), con);
+            new DatabaseController().addLocation(body.getLocation().getName().trim(), con);
             return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
             return Response.status(400).entity(e.toString()).build();
@@ -42,10 +40,9 @@ public class LocationApiServiceImpl extends LocationApiService {
     @Override
     public Response deleteLocation(LocationRequest body, SecurityContext securityContext) throws NotFoundException {
         try (Connection con = DataSource.getInstance().getConnection()) {
-            new DatabaseController().deleteLocation(body.getString().trim(), con);
+            new DatabaseController().deleteLocation(body.getLocation().getName().trim(), con);
             return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
         } catch (Exception e) {
-            e.printStackTrace();
             return Response.status(400).entity(e.toString()).build();
         }
     }

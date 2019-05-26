@@ -39,7 +39,7 @@ import javax.validation.constraints.*;
 
 
 @io.swagger.annotations.Api(description = "the products API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-10T11:07:46.349Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-05-26T10:45:56.712Z")
 public class ProductsApi  {
    private final ProductsApiService delegate;
 
@@ -144,7 +144,7 @@ public class ProductsApi  {
     throws NotFoundException {
         return delegate.editProduct(body,securityContext);
     }
-    @GET
+    @POST
     @Path("/getAllCategories")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
@@ -160,7 +160,7 @@ public class ProductsApi  {
     throws NotFoundException {
         return delegate.getAllCategories(body,securityContext);
     }
-    @GET
+    @POST
     @Path("/getAllProducts")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })

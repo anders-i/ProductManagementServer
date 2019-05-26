@@ -9,6 +9,7 @@ import io.swagger.model.AllCategories;
 import io.swagger.model.AllLocations;
 import io.swagger.model.Barcode;
 import io.swagger.model.EditListOfProductsRequest;
+import io.swagger.model.Location;
 import io.swagger.model.Product;
 import io.swagger.model.ProductArray;
 import io.swagger.model.SearchRequest;
@@ -125,7 +126,9 @@ public class DatabaseController {
         ResultSet rs = statement.executeQuery(query);
 
         while (rs.next()) {
-            response.add(rs.getString("location"));
+            Location location = new Location();
+            location.setName(rs.getString("location"));
+            response.add(location);
         }
         rs.close();
         statement.close();
