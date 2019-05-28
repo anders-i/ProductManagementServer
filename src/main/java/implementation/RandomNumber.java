@@ -19,7 +19,9 @@ public class RandomNumber {
         Long rightLimit = 9999999999999L;
         Long longRandom = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
         barcode.setBarcodeID(longRandom);
- 
+        if(barcode.equals(1234567898766L)){ // This is to be sure the test methods in TestCreateProduct always will work as intended.
+            barcode = randomProductBarcode();
+        }
         return barcode;
     }
         public Barcode randomLocationBarcode() {

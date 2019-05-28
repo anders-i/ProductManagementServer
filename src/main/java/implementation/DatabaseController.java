@@ -66,7 +66,7 @@ public class DatabaseController {
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);
         Product product = new Product();
-        while (rs.next()) {
+        if (rs.next()) {
             product.setName(rs.getString("name"));
             product.setCategory(rs.getString("category"));
             product.setColor(rs.getString("maincolor"));
@@ -76,6 +76,8 @@ public class DatabaseController {
             product.setMinAmount(rs.getInt("minamount"));
             product.setMustBeRestock(rs.getBoolean("mustberestocked"));
             product.setCanBeRestock(rs.getBoolean("canberestocked"));
+        } else {
+            throw new SQLException("No product with that barcode");
         }
         rs.close();
         statement.close();
@@ -259,7 +261,7 @@ public class DatabaseController {
         String query1 = "SELECT * FROM location WHERE locationbarcode=" + locationBarcodeID + ";";
         Statement statement1 = con.createStatement();
         ResultSet rs1 = statement1.executeQuery(query1);
-        
+
         while (rs1.next()) {
             String locationName = rs1.getString("location").trim();
             String query2 = "SELECT * FROM products WHERE location='" + locationName + "';";
