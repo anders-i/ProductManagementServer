@@ -255,7 +255,24 @@ public class DatabaseController {
         rs.close();
         statement.close();
     }
-
+    
+    public AllLocations searchLocations(String keyWord, Connection con) throws SQLException {
+        String keyWordLowerCase = keyWord.toLowerCase();
+        AllLocations response = new AllLocations();
+        String query = "SELECT * FROM location WHERE LOWER(location) LIKE '%" + keyWordLowerCase + "%' OR CAST(locationbarcode AS text) LIKE '%" + keyWordLowerCase + "%';";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        while (rs.next()) {
+            Location location = new Location();
+            location.setName(rs.getString("location"));
+            location.setAmountOfUniqueProducts(rs.getInt("locationbarcode"));
+            response.add(location);
+        }
+        rs.close();
+        statement.close();
+        return response;
+    }
+    
     public ProductArray getAllProductsOnLocation(Long locationBarcodeID, Connection con) throws SQLException {
         ProductArray response = new ProductArray();
         String query1 = "SELECT * FROM location WHERE locationbarcode=" + locationBarcodeID + ";";
@@ -289,5 +306,4 @@ public class DatabaseController {
         statement1.close();
         return response;
     }
-
 }

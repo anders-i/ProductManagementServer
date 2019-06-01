@@ -86,7 +86,18 @@ public class LocationApiServiceImpl extends LocationApiService {
 
     @Override
     public Response searchLocation(LocationSearchRequest body, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        try {
+            AuthManagementClient.getNewInstance().checkAccessToken(TokenConverter.getToken(body.getToken()));
+            try (Connection con = DataSource.getInstance().getConnection()) {
+                AllLocations response = new DatabaseController().searchLocations(body.getString(), con);
+                return Response.ok().entity(response).build();
+            } catch (Exception e) {
+                Logger.getLogger(LocationApiServiceImpl.class.getName()).log(Level.SEVERE, null, e);
+                return Response.status(400).entity(e.toString()).build();
+            }
+        } catch (io.swagger.client.ApiException e) {
+            Logger.getLogger(LocationApiServiceImpl.class.getName()).log(Level.SEVERE, null, e);
+            return Response.status(400).entity(e.toString()).build();
+        }
     }
 }
